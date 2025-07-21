@@ -1,0 +1,29 @@
+query SearchRepositories($query: String!, $first: Int!) {
+  search(query: $query, type: REPOSITORY, first: $first) {
+    nodes {
+      ... on Repository {
+        name
+        __typename
+        primaryLanguage {
+          name
+        }
+        forkCount
+        stargazerCount
+        updatedAt
+        id
+      }
+    }
+  }
+}
+
+query GetRepositoryDetails($repoId: ID!) {
+  node(id: $repoId) {
+    ... on Repository {
+      name
+      description
+      licenseInfo {
+        name
+      }
+    }
+  }
+}

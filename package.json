@@ -6,17 +6,31 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "codegen": "graphql-codegen",
+    "codegen:watch": "graphql-codegen -w"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@graphql-codegen/cli": "^5.0.7",
+    "@graphql-codegen/typescript-resolvers": "^4.5.1",
+    "@mui/material": "^7.2.0",
+    "@reduxjs/toolkit": "^2.8.2",
+    "@rtk-query/graphql-request-base-query": "^2.3.1",
+    "codegen": "^0.1.0",
+    "dotenv": "^17.2.0",
+    "graphql": "^16.11.0",
+    "next": "15.4.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "next": "15.4.1"
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@graphql-codegen/typescript-rtk-query": "^3.1.2",
     "@types/node": "^20",
     "@types/react": "^19",
-    "@types/react-dom": "^19"
+    "@types/react-dom": "^19",
+    "typescript": "^5"
   }
 }
