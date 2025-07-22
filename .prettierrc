@@ -6,13 +6,8 @@
   "importOrder": [
     "^react",
     "<THIRD_PARTY_MODULES>",
-    "^@repo/ui(.*)$",
     "^@/components/(.*)$",
-    "^@/lib/(.*)$",
 
-    "^#components/(.*)$",
-    "^#lib/(.*)$",
-    "^#(.*)$",
     "^[./]"
   ],
   "importOrderSeparation": true,

@@ -13,12 +13,19 @@ query SearchRepositories($query: String!, $first: Int!) {
         id
       }
     }
+    pageInfo {
+      endCursor
+      startCursor
+      hasNextPage
+      hasPreviousPage
+    }
   }
 }
 
 query GetRepositoryDetails($repoId: ID!) {
   node(id: $repoId) {
     ... on Repository {
+      __typename
       name
       description
       licenseInfo {

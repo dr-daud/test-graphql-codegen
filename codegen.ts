@@ -1,27 +1,27 @@
-import type { CodegenConfig } from "@graphql-codegen/cli";
+import type { CodegenConfig } from '@graphql-codegen/cli'
 
-const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN;
+const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN
 
 const config: CodegenConfig = {
-   schema: [
+  schema: [
     {
       'https://api.github.com/graphql': {
         headers: {
           Authorization: `Bearer `,
-           'User-Agent': 'github-search',
+          'User-Agent': 'github-search',
         },
       },
     },
   ],
   documents: 'src/graphql/**/*.graphql',
   generates: {
-    "src/app/api/generated.ts": {
+    'src/app/api/generated.ts': {
       plugins: [
-        "typescript",
-       "typescript-operations",
+        'typescript',
+        'typescript-operations',
         {
-          "typescript-rtk-query": {
-            importBaseApiFrom: "./baseApi",
+          'typescript-rtk-query': {
+            importBaseApiFrom: './baseApi',
             exportHooks: true,
           },
         },
@@ -31,5 +31,5 @@ const config: CodegenConfig = {
       },
     },
   },
-};
-export default config;
+}
+export default config

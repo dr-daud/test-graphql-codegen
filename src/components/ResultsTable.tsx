@@ -1,29 +1,37 @@
-import { useSearchRepositoriesQuery } from "@/app/api/generated";
+import { useState } from 'react'
+
 import {
-  TableContainer,
+  SearchRepositoriesQuery,
+  useGetRepositoryDetailsQuery,
+  useSearchRepositoriesQuery,
+} from '@/app/api/generated'
+import {
   Paper,
+  Stack,
   Table,
+  TableBody,
+  TableCell,
+  TableContainer,
   TableHead,
   TableRow,
-  TableCell,
-  TableBody,
-  Box,
-  Stack,
-} from "@mui/material";
-import { useState } from "react";
+} from '@mui/material'
 
+import NoData from './NoData'
+import RepoDetails from './RepoDetails'
 
 interface Props {
-  searchValue: string;
+  data?: SearchRepositoriesQuery
 }
 
-const ResultsTable = ({ searchValue }: Props) => {
+const ResultsTable = ({ data }: Props) => {
+  const [selectedRepo, setSelectedRepo] = useState<string>('')
+  const { data: repo } = useGetRepositoryDetailsQuery(
+    { repoId: String(selectedRepo) },
+    { skip: !selectedRepo },
+  )
 
-  const {data} = useSearchRepositoriesQuery({query: searchValue, first: 10})
-  console.log(data)
-  const [selectedRepo, setSelectedRepo] = useState<number | undefined>();
-  const [currentPage, setCurrentPAge] = useState();
-  const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" });
+  // const [currentPage, setCurrentPAge] = useState()
+  // const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' })
 
   // const handleSort = (key: string) => {
   //   setSortConfig((prev) => ({
@@ -33,36 +41,28 @@ const ResultsTable = ({ searchValue }: Props) => {
   // };
 
   return (
-    <Stack sx={{ flexDirection: "row" }}>
+    <Stack sx={{ flexDirection: 'row' }}>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="Результаты поиска">
           <TableHead>
-            <TableRow sx={{ cursor: "pointer" }}>
+            <TableRow sx={{ cursor: 'pointer' }}>
               <TableCell>Название</TableCell>
               <TableCell>Язык</TableCell>
-              <TableCell>
-                Число форков
-              </TableCell>
-              <TableCell >
-                Число звезд
-              </TableCell>
-              <TableCell >
-                Дата обновления
-              </TableCell>
+              <TableCell>Число форков</TableCell>
+              <TableCell>Число звезд</TableCell>
+              <TableCell>Дата обновления</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.search?.nodes?.map((repo, index) =>{
-              console.log(repo?.__typename === "Repository")
-              return (
-                 repo?.__typename === "Repository" ? (
+            {data?.search?.nodes?.map((repo, index) => {
+              return repo?.__typename === 'Repository' ? (
                 <TableRow
-                  onClick={() => setSelectedRepo(index)}
-                  key={index}
+                  onClick={() => setSelectedRepo(repo?.id)}
+                  key={repo?.id}
                   sx={{
-                    "&:last-child td, &:last-child th": { border: 0 },
-                    cursor: "pointer",
-                    backgroundColor: `${selectedRepo === index ? "#2196F30A" : "#fff"}`,
+                    '&:last-child td, &:last-child th': { border: 0 },
+                    cursor: 'pointer',
+                    backgroundColor: `${selectedRepo === repo?.id ? '#2196F30A' : '#fff'}`,
                   }}
                 >
                   <TableCell component="th" scope="row">
@@ -74,27 +74,13 @@ const ResultsTable = ({ searchValue }: Props) => {
                   <TableCell>{repo.updatedAt}</TableCell>
                 </TableRow>
               ) : null
-              )
-            }
-            )}
+            })}
           </TableBody>
         </Table>
       </TableContainer>
-      <Box sx={{ backgroundColor: "#F2F2F2", width: "480px" }}>
-        <Box
-          sx={{
-            fontSize: "14px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-          }}
-        >
-          Выберите репозиторий
-        </Box>
-      </Box>
+      {selectedRepo ? <RepoDetails repo={repo} /> : <NoData />}
     </Stack>
-  );
-};
+  )
+}
 
-export default ResultsTable;
+export default ResultsTable

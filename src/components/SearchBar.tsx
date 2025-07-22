@@ -3,9 +3,11 @@ import { Button, Stack, TextField } from "@mui/material";
 interface Props {
   searchValue: string;
   setSearchValue: (value: string) => void;
+  setQuerySearchValue:(value: string) => void
 }
 
-const SearchBar = ({ searchValue, setSearchValue }: Props) => {
+const SearchBar = ({ searchValue, setSearchValue, setQuerySearchValue}: Props) => {
+
   return (
     <Stack
       sx={{
@@ -29,7 +31,7 @@ const SearchBar = ({ searchValue, setSearchValue }: Props) => {
           },
         }}
       />
-      <Button variant="contained" sx={{ width: "105px" }}>
+      <Button variant="contained" sx={{ width: "105px" }} onClick={() => setQuerySearchValue(searchValue)}>
         Искать
       </Button>
     </Stack>
