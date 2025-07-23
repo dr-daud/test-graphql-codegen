@@ -35619,10 +35619,11 @@ export type WorkflowsParametersInput = {
 export type SearchRepositoriesQueryVariables = Exact<{
   query: Scalars['String']['input'];
   first: Scalars['Int']['input'];
+  after?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type SearchRepositoriesQuery = { __typename?: 'Query', search: { __typename?: 'SearchResultItemConnection', nodes?: Array<{ __typename?: 'App' } | { __typename?: 'Discussion' } | { __typename?: 'Issue' } | { __typename?: 'MarketplaceListing' } | { __typename?: 'Organization' } | { __typename?: 'PullRequest' } | { __typename: 'Repository', name: string, forkCount: number, stargazerCount: number, updatedAt: any, id: string, primaryLanguage?: { __typename?: 'Language', name: string } | null } | { __typename?: 'User' } | null> | null, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, startCursor?: string | null, hasNextPage: boolean, hasPreviousPage: boolean } } };
+export type SearchRepositoriesQuery = { __typename?: 'Query', search: { __typename?: 'SearchResultItemConnection', nodes?: Array<{ __typename?: 'App' } | { __typename?: 'Discussion' } | { __typename?: 'Issue' } | { __typename?: 'MarketplaceListing' } | { __typename?: 'Organization' } | { __typename?: 'PullRequest' } | { __typename: 'Repository', name: string, forkCount: number, stargazerCount: number, updatedAt: any, id: string, primaryLanguage?: { __typename?: 'Language', name: string } | null } | { __typename?: 'User' } | null> | null, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null, hasNextPage: boolean } } };
 
 export type GetRepositoryDetailsQueryVariables = Exact<{
   repoId: Scalars['ID']['input'];
@@ -35633,8 +35634,8 @@ export type GetRepositoryDetailsQuery = { __typename?: 'Query', node?: { __typen
 
 
 export const SearchRepositoriesDocument = `
-    query SearchRepositories($query: String!, $first: Int!) {
-  search(query: $query, type: REPOSITORY, first: $first) {
+    query SearchRepositories($query: String!, $first: Int!, $after: String) {
+  search(query: $query, type: REPOSITORY, first: $first, after: $after) {
     nodes {
       ... on Repository {
         name
@@ -35649,10 +35650,10 @@ export const SearchRepositoriesDocument = `
       }
     }
     pageInfo {
-      endCursor
-      startCursor
-      hasNextPage
       hasPreviousPage
+      startCursor
+      endCursor
+      hasNextPage
     }
   }
 }

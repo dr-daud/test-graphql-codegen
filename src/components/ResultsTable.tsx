@@ -3,7 +3,6 @@ import { useState } from 'react'
 import {
   SearchRepositoriesQuery,
   useGetRepositoryDetailsQuery,
-  useSearchRepositoriesQuery,
 } from '@/app/api/generated'
 import {
   Paper,
@@ -15,31 +14,29 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material'
+import dayjs from 'dayjs'
 
 import NoData from './NoData'
 import RepoDetails from './RepoDetails'
 
 interface Props {
   data?: SearchRepositoriesQuery
+  handleSort: (field: 'stars' | 'forks' | 'updated') => void
+  sortField: 'stars' | 'forks' | 'updated' | null
+  sortDirection: 'asc' | 'desc'
 }
 
-const ResultsTable = ({ data }: Props) => {
+const ResultsTable = ({
+  data,
+  handleSort,
+  sortField,
+  sortDirection,
+}: Props) => {
   const [selectedRepo, setSelectedRepo] = useState<string>('')
   const { data: repo } = useGetRepositoryDetailsQuery(
     { repoId: String(selectedRepo) },
     { skip: !selectedRepo },
   )
-
-  // const [currentPage, setCurrentPAge] = useState()
-  // const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' })
-
-  // const handleSort = (key: string) => {
-  //   setSortConfig((prev) => ({
-  //     key,
-  //     direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
-  //   }));
-  // };
-
   return (
     <Stack sx={{ flexDirection: 'row' }}>
       <TableContainer component={Paper}>
@@ -48,9 +45,19 @@ const ResultsTable = ({ data }: Props) => {
             <TableRow sx={{ cursor: 'pointer' }}>
               <TableCell>Название</TableCell>
               <TableCell>Язык</TableCell>
-              <TableCell>Число форков</TableCell>
-              <TableCell>Число звезд</TableCell>
-              <TableCell>Дата обновления</TableCell>
+              <TableCell onClick={() => handleSort('forks')}>
+                Число форков{' '}
+                {sortField === 'forks' && (sortDirection === 'asc' ? '↑' : '↓')}
+              </TableCell>
+              <TableCell onClick={() => handleSort('stars')}>
+                Число звезд{' '}
+                {sortField === 'stars' && (sortDirection === 'asc' ? '↑' : '↓')}
+              </TableCell>
+              <TableCell onClick={() => handleSort('updated')}>
+                Дата обновления{' '}
+                {sortField === 'updated' &&
+                  (sortDirection === 'asc' ? '↑' : '↓')}
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -71,7 +78,9 @@ const ResultsTable = ({ data }: Props) => {
                   <TableCell>{repo.primaryLanguage?.name}</TableCell>
                   <TableCell>{repo.forkCount}</TableCell>
                   <TableCell>{repo.stargazerCount}</TableCell>
-                  <TableCell>{repo.updatedAt}</TableCell>
+                  <TableCell>
+                    {dayjs(repo.updatedAt).format('D MMMM YYYY, HH:mm')}
+                  </TableCell>
                 </TableRow>
               ) : null
             })}

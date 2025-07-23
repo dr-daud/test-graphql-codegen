@@ -1,5 +1,5 @@
-query SearchRepositories($query: String!, $first: Int!) {
-  search(query: $query, type: REPOSITORY, first: $first) {
+query SearchRepositories($query: String!, $first: Int!, $after: String) {
+  search(query: $query, type: REPOSITORY, first: $first, after: $after) {
     nodes {
       ... on Repository {
         name
@@ -14,10 +14,10 @@ query SearchRepositories($query: String!, $first: Int!) {
       }
     }
     pageInfo {
-      endCursor
-      startCursor
-      hasNextPage
       hasPreviousPage
+      startCursor
+      endCursor
+      hasNextPage
     }
   }
 }

@@ -1,13 +1,16 @@
 import type { CodegenConfig } from '@graphql-codegen/cli'
+import dotenv from 'dotenv'
 
-const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN
+dotenv.config({ path: './.env.local' })
+
+const token = process.env.NEXT_PUBLIC_API_TOKEN
 
 const config: CodegenConfig = {
   schema: [
     {
       'https://api.github.com/graphql': {
         headers: {
-          Authorization: `Bearer `,
+          Authorization: `Bearer ${token}`,
           'User-Agent': 'github-search',
         },
       },
