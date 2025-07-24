@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { useSearchRepositoriesQuery } from '@/app/api/generated'
+import { TSortDirection, TSortField } from '@/types/types'
 import { TablePagination } from '@mui/material'
 
 import Footer from '@/components/Footer'
@@ -10,10 +11,8 @@ import Welcome from '@/components/Welcome'
 
 export default function MainPage() {
   const [searchValue, setSearchValue] = useState('')
-  const [sortField, setSortField] = useState<
-    'stars' | 'forks' | 'updated' | null
-  >(null)
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc')
+  const [sortField, setSortField] = useState<TSortField>(null)
+  const [sortDirection, setSortDirection] = useState<TSortDirection>('desc')
   const [querySearchValue, setQuerySearchValue] = useState('')
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)

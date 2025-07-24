@@ -4,6 +4,7 @@ import {
   SearchRepositoriesQuery,
   useGetRepositoryDetailsQuery,
 } from '@/app/api/generated'
+import { TField, TSortDirection, TSortField } from '@/types/types'
 import {
   Paper,
   Stack,
@@ -14,16 +15,16 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material'
-import dayjs from 'dayjs'
 
 import NoData from './NoData'
 import RepoDetails from './RepoDetails'
+import ResultsTableList from './ResultsTableList'
 
 interface Props {
   data?: SearchRepositoriesQuery
-  handleSort: (field: 'stars' | 'forks' | 'updated') => void
-  sortField: 'stars' | 'forks' | 'updated' | null
-  sortDirection: 'asc' | 'desc'
+  handleSort: (field: TField) => void
+  sortField: TSortField
+  sortDirection: TSortDirection
 }
 
 const ResultsTable = ({
@@ -61,29 +62,11 @@ const ResultsTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.search?.nodes?.map((repo, index) => {
-              return repo?.__typename === 'Repository' ? (
-                <TableRow
-                  onClick={() => setSelectedRepo(repo?.id)}
-                  key={repo?.id}
-                  sx={{
-                    '&:last-child td, &:last-child th': { border: 0 },
-                    cursor: 'pointer',
-                    backgroundColor: `${selectedRepo === repo?.id ? '#2196F30A' : '#fff'}`,
-                  }}
-                >
-                  <TableCell component="th" scope="row">
-                    {repo.name}
-                  </TableCell>
-                  <TableCell>{repo.primaryLanguage?.name}</TableCell>
-                  <TableCell>{repo.forkCount}</TableCell>
-                  <TableCell>{repo.stargazerCount}</TableCell>
-                  <TableCell>
-                    {dayjs(repo.updatedAt).format('D MMMM YYYY, HH:mm')}
-                  </TableCell>
-                </TableRow>
-              ) : null
-            })}
+            <ResultsTableList
+              data={data}
+              setSelectedRepo={setSelectedRepo}
+              selectedRepo={selectedRepo}
+            />
           </TableBody>
         </Table>
       </TableContainer>
