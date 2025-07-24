@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 
 import { SearchRepositoriesQuery } from '@/app/api/generated'
+import { TCursors } from '@/types/types'
 import { TablePagination } from '@mui/material'
 
-type SetCursors = React.Dispatch<React.SetStateAction<(string | null)[]>>
+type SetCursors = React.Dispatch<React.SetStateAction<TCursors>>
 
 interface Props {
   page: number
@@ -12,7 +13,7 @@ interface Props {
   setRowsPerPage: (number: number) => void
   data?: SearchRepositoriesQuery
   setCursors: SetCursors
-  cursors: (string | null)[]
+  cursors: TCursors
 }
 
 const Pagination = ({

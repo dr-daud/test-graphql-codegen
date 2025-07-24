@@ -32,6 +32,10 @@ const SearchBar = ({
           '& .MuiOutlinedInput-root': {
             height: 42,
           },
+          '& .MuiOutlinedInput-input': {
+            padding: 0,
+            paddingLeft: 2,
+          },
         }}
       />
       <Button

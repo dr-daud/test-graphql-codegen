@@ -7,7 +7,7 @@ interface Props {
   sortDirection: TSortDirection
 }
 
-const ResultsRow = ({ handleSort, sortField, sortDirection }: Props) => {
+const ResultsLabelsRow = ({ handleSort, sortField, sortDirection }: Props) => {
   return (
     <TableRow sx={{ cursor: 'pointer' }}>
       <TableCell>Название</TableCell>
@@ -28,4 +28,4 @@ const ResultsRow = ({ handleSort, sortField, sortDirection }: Props) => {
   )
 }
 
-export default ResultsRow
+export default ResultsLabelsRow
