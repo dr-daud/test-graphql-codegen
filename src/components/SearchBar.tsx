@@ -1,19 +1,22 @@
-import { Button, Stack, TextField } from "@mui/material";
+import { Button, Stack, TextField } from '@mui/material'
 
 interface Props {
-  searchValue: string;
-  setSearchValue: (value: string) => void;
-  setQuerySearchValue:(value: string) => void
+  searchValue: string
+  setSearchValue: (value: string) => void
+  setQuerySearchValue: (value: string) => void
 }
 
-const SearchBar = ({ searchValue, setSearchValue, setQuerySearchValue}: Props) => {
-
+const SearchBar = ({
+  searchValue,
+  setSearchValue,
+  setQuerySearchValue,
+}: Props) => {
   return (
     <Stack
       sx={{
-        backgroundColor: "#00838F",
-        padding: "19px 0 19px 32px",
-        flexDirection: "row",
+        backgroundColor: '#00838F',
+        padding: '19px 0 19px 32px',
+        flexDirection: 'row',
         gap: 1,
       }}
     >
@@ -23,19 +26,23 @@ const SearchBar = ({ searchValue, setSearchValue, setQuerySearchValue}: Props) =
         variant="outlined"
         placeholder="Введите поисковый запрос"
         sx={{
-          width: "912px",
-          backgroundColor: "#fff",
-          borderRadius: "4px",
-          "& .MuiOutlinedInput-root": {
+          width: '912px',
+          backgroundColor: '#fff',
+          borderRadius: '4px',
+          '& .MuiOutlinedInput-root': {
             height: 42,
           },
         }}
       />
-      <Button variant="contained" sx={{ width: "105px" }} onClick={() => setQuerySearchValue(searchValue)}>
+      <Button
+        variant="contained"
+        sx={{ width: '105px' }}
+        onClick={() => setQuerySearchValue(searchValue)}
+      >
         Искать
       </Button>
     </Stack>
-  );
-};
+  )
+}
 
-export default SearchBar;
+export default SearchBar
