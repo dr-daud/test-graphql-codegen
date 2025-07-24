@@ -1,10 +1,8 @@
 import { useEffect } from 'react'
 
 import { SearchRepositoriesQuery } from '@/app/api/generated'
-import { TCursors } from '@/types/types'
+import { SetCursors, TCursors } from '@/types/types'
 import { TablePagination } from '@mui/material'
-
-type SetCursors = React.Dispatch<React.SetStateAction<TCursors>>
 
 interface Props {
   page: number

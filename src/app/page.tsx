@@ -1,3 +1,5 @@
+'use client'
+
 import { useState } from 'react'
 
 import Footer from '@/components/Footer'
@@ -15,10 +17,7 @@ const MainPage = () => {
         setSearchValue={setSearchValue}
         setQuerySearchValue={setQuerySearchValue}
       />
-
-      <>
-        <ResultsTable querySearchValue={querySearchValue} />
-      </>
+      <ResultsTable querySearchValue={querySearchValue} />
       <Footer />
     </>
   )

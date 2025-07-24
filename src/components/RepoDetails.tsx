@@ -1,7 +1,4 @@
-import {
-  GetRepositoryDetailsQuery,
-  useGetRepositoryDetailsQuery,
-} from '@/app/api/generated'
+import { useGetRepositoryDetailsQuery } from '@/app/api/generated'
 import { Box, Typography } from '@mui/material'
 
 interface Props {
