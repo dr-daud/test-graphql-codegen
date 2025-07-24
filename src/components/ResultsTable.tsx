@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import {
-  useGetRepositoryDetailsQuery,
-  useSearchRepositoriesQuery,
-} from '@/app/api/generated'
-import { TSortDirection, TSortField } from '@/types/types'
+import { useSearchRepositoriesQuery } from '@/app/api/generated'
+import { TField, TSortDirection, TSortField } from '@/types/types'
 import {
   Stack,
   Table,
@@ -30,12 +27,7 @@ const ResultsTable = ({ querySearchValue }: { querySearchValue: string }) => {
 
   const currentCursor = cursors[page] ?? null
 
-  const { data: repo } = useGetRepositoryDetailsQuery(
-    { repoId: String(selectedRepo) },
-    { skip: !selectedRepo },
-  )
-
-  const handleSort = (field: 'stars' | 'forks' | 'updated') => {
+  const handleSort = (field: TField) => {
     if (sortField === field) {
       setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
     } else {
@@ -60,18 +52,6 @@ const ResultsTable = ({ querySearchValue }: { querySearchValue: string }) => {
     { query: finalQuery, first: rowsPerPage, after: currentCursor },
     { skip: !finalQuery },
   )
-
-  useEffect(() => {
-    const endCursor = data?.search.pageInfo?.endCursor
-
-    if (
-      endCursor &&
-      cursors.length === page + 1 &&
-      cursors[cursors.length - 1] !== endCursor
-    ) {
-      setCursors((prev) => [...prev, endCursor])
-    }
-  }, [data, page, cursors])
 
   useEffect(() => {
     setPage(0)
@@ -106,9 +86,10 @@ const ResultsTable = ({ querySearchValue }: { querySearchValue: string }) => {
           setRowsPerPage={setRowsPerPage}
           data={data}
           setCursors={setCursors}
+          cursors={cursors}
         />
       </Stack>
-      {selectedRepo ? <RepoDetails repo={repo} /> : <NoData />}
+      {selectedRepo ? <RepoDetails selectedRepo={selectedRepo} /> : <NoData />}
     </Stack>
   ) : (
     <Welcome />

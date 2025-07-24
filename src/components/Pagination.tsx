@@ -1,5 +1,9 @@
+import { useEffect } from 'react'
+
 import { SearchRepositoriesQuery } from '@/app/api/generated'
 import { TablePagination } from '@mui/material'
+
+type SetCursors = React.Dispatch<React.SetStateAction<(string | null)[]>>
 
 interface Props {
   page: number
@@ -7,7 +11,8 @@ interface Props {
   rowsPerPage: number
   setRowsPerPage: (number: number) => void
   data?: SearchRepositoriesQuery
-  setCursors: (arg: (string | null)[]) => void
+  setCursors: SetCursors
+  cursors: (string | null)[]
 }
 
 const Pagination = ({
@@ -17,6 +22,7 @@ const Pagination = ({
   setRowsPerPage,
   data,
   setCursors,
+  cursors,
 }: Props) => {
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage)
@@ -30,6 +36,18 @@ const Pagination = ({
     setPage(0)
     setCursors([null])
   }
+
+  useEffect(() => {
+    const endCursor = data?.search.pageInfo?.endCursor
+
+    if (
+      endCursor &&
+      cursors.length === page + 1 &&
+      cursors[cursors.length - 1] !== endCursor
+    ) {
+      setCursors((prev) => [...prev, endCursor])
+    }
+  }, [data, page, cursors])
 
   return (
     <TablePagination

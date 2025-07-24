@@ -1,18 +1,26 @@
-import { GetRepositoryDetailsQuery } from '@/app/api/generated'
+import {
+  GetRepositoryDetailsQuery,
+  useGetRepositoryDetailsQuery,
+} from '@/app/api/generated'
 import { Box, Typography } from '@mui/material'
 
 interface Props {
-  repo?: GetRepositoryDetailsQuery
+  selectedRepo: string
 }
 
-const RepoDetails = ({ repo }: Props) => {
+const RepoDetails = ({ selectedRepo }: Props) => {
+  const { data } = useGetRepositoryDetailsQuery(
+    { repoId: String(selectedRepo) },
+    { skip: !selectedRepo },
+  )
+
   return (
     <Box sx={{ backgroundColor: '#F2F2F2', padding: 3, width: '480px' }}>
-      {repo?.node?.__typename === 'Repository' ? (
+      {data?.node?.__typename === 'Repository' ? (
         <>
-          <Typography sx={{ fontSize: 32 }}>{repo.node.name}</Typography>
-          <Typography>Описание: {repo.node.description}</Typography>
-          <Typography sx={{ mt: 2 }}>{repo.node.licenseInfo?.name}</Typography>
+          <Typography sx={{ fontSize: 32 }}>{data.node.name}</Typography>
+          <Typography>Описание: {data.node.description}</Typography>
+          <Typography sx={{ mt: 2 }}>{data.node.licenseInfo?.name}</Typography>
         </>
       ) : null}
     </Box>
