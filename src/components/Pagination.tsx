@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
 
-import { SearchRepositoriesQuery } from '@/app/api/generated'
 import { setPage, setRowsPerPage } from '@/store/paginationSlice'
 import { RootState } from '@/store/store'
 import { TablePagination } from '@mui/material'
