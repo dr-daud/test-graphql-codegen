@@ -1,16 +1,14 @@
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+
+import { setQuerySearchValue } from '@/store/repoSlice'
 import { Button, Stack, TextField } from '@mui/material'
 
-interface Props {
-  searchValue: string
-  setSearchValue: (value: string) => void
-  setQuerySearchValue: (value: string) => void
-}
+const SearchBar = () => {
+  const [searchValue, setSearchValue] = useState('')
 
-const SearchBar = ({
-  searchValue,
-  setSearchValue,
-  setQuerySearchValue,
-}: Props) => {
+  const dispatch = useDispatch()
+
   return (
     <Stack
       sx={{
@@ -41,7 +39,7 @@ const SearchBar = ({
       <Button
         variant="contained"
         sx={{ width: '105px' }}
-        onClick={() => setQuerySearchValue(searchValue)}
+        onClick={() => dispatch(setQuerySearchValue(searchValue))}
       >
         Искать
       </Button>

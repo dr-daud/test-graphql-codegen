@@ -1,11 +1,11 @@
+import { useSelector } from 'react-redux'
+
 import { useGetRepositoryDetailsQuery } from '@/app/api/generated'
+import { RootState } from '@/store/store'
 import { Box, Typography } from '@mui/material'
 
-interface Props {
-  selectedRepo: string
-}
-
-const RepoDetails = ({ selectedRepo }: Props) => {
+const RepoDetails = () => {
+  const { selectedRepo } = useSelector((state: RootState) => state.sortReducer)
   const { data } = useGetRepositoryDetailsQuery(
     { repoId: String(selectedRepo) },
     { skip: !selectedRepo },

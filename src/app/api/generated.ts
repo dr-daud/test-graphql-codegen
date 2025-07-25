@@ -35620,6 +35620,7 @@ export type SearchRepositoriesQueryVariables = Exact<{
   query: Scalars['String']['input'];
   first: Scalars['Int']['input'];
   after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
@@ -35634,8 +35635,14 @@ export type GetRepositoryDetailsQuery = { __typename?: 'Query', node?: { __typen
 
 
 export const SearchRepositoriesDocument = `
-    query SearchRepositories($query: String!, $first: Int!, $after: String) {
-  search(query: $query, type: REPOSITORY, first: $first, after: $after) {
+    query SearchRepositories($query: String!, $first: Int!, $after: String, $before: String) {
+  search(
+    query: $query
+    type: REPOSITORY
+    first: $first
+    after: $after
+    before: $before
+  ) {
     nodes {
       ... on Repository {
         name

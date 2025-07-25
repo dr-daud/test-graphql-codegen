@@ -1,65 +1,39 @@
-import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { SearchRepositoriesQuery } from '@/app/api/generated'
-import { SetCursors, TCursors } from '@/types/types'
+import { setPage, setRowsPerPage } from '@/store/paginationSlice'
+import { RootState } from '@/store/store'
 import { TablePagination } from '@mui/material'
 
-interface Props {
-  page: number
-  setPage: (number: number) => void
-  rowsPerPage: number
-  setRowsPerPage: (number: number) => void
-  data?: SearchRepositoriesQuery
-  setCursors: SetCursors
-  cursors: TCursors
-}
+import { CustomPaginationActions } from './CustomPaginationActions'
 
-const Pagination = ({
-  page,
-  setPage,
-  rowsPerPage,
-  setRowsPerPage,
-  data,
-  setCursors,
-  cursors,
-}: Props) => {
+const Pagination = () => {
+  const { page, rowsPerPage } = useSelector(
+    (state: RootState) => state.paginationReducer,
+  )
+  const dispatch = useDispatch()
+
   const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage)
+    dispatch(setPage(newPage))
   }
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const newSize = parseInt(event.target.value, 10)
-    setRowsPerPage(newSize)
-    setPage(0)
-    setCursors([null])
+    dispatch(setRowsPerPage(newSize))
+    dispatch(setPage(0))
   }
-
-  useEffect(() => {
-    const endCursor = data?.search.pageInfo?.endCursor
-
-    if (
-      endCursor &&
-      cursors.length === page + 1 &&
-      cursors[cursors.length - 1] !== endCursor
-    ) {
-      setCursors((prev) => [...prev, endCursor])
-    }
-  }, [data, page, cursors])
 
   return (
     <TablePagination
       component="div"
+      ActionsComponent={CustomPaginationActions}
       count={-1}
       page={page}
       onPageChange={handleChangePage}
       rowsPerPage={rowsPerPage}
       onRowsPerPageChange={handleChangeRowsPerPage}
-      nextIconButtonProps={{
-        disabled: !data?.search.pageInfo.hasNextPage,
-      }}
-      backIconButtonProps={{ disabled: page === 0 }}
       labelDisplayedRows={() => `Page ${page + 1}`}
     />
   )

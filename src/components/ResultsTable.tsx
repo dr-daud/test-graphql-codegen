@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { useSearchRepositoriesQuery } from '@/app/api/generated'
-import { TCursors, TField, TSortDirection, TSortField } from '@/types/types'
+import { setPage } from '@/store/paginationSlice'
+import { setSortDirection, setSortField } from '@/store/sortSlice'
+import { RootState } from '@/store/store'
+import { TField, TSortDirection } from '@/types/types'
 import {
   Stack,
   Table,
@@ -17,25 +21,31 @@ import ResultsLabelsRow from './ResultsLabelsRow'
 import ResultsTableList from './ResultsTableList'
 import Welcome from './Welcome'
 
-const ResultsTable = ({ querySearchValue }: { querySearchValue: string }) => {
-  const [selectedRepo, setSelectedRepo] = useState<string>('')
-  const [cursors, setCursors] = useState<TCursors>([null])
-  const [page, setPage] = useState(0)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [sortDirection, setSortDirection] = useState<TSortDirection>('desc')
-  const [sortField, setSortField] = useState<TSortField>(null)
+const ResultsTable = () => {
+  const dispatch = useDispatch()
 
-  const currentCursor = cursors[page] ?? null
+  const { querySearchValue } = useSelector(
+    (state: RootState) => state.repoReducer,
+  )
+
+  const { after, before, rowsPerPage } = useSelector(
+    (state: RootState) => state.paginationReducer,
+  )
+
+  const { sortDirection, selectedRepo, sortField } = useSelector(
+    (state: RootState) => state.sortReducer,
+  )
 
   const handleSort = (field: TField) => {
     if (sortField === field) {
-      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'))
+      const newDirection: TSortDirection =
+        sortDirection === 'asc' ? 'desc' : 'asc'
+      dispatch(setSortDirection(newDirection))
     } else {
-      setSortField(field)
-      setSortDirection('desc')
+      dispatch(setSortField(field))
+      dispatch(setSortDirection('desc'))
     }
-    setPage(0)
-    setCursors([null])
+    dispatch(setPage(0))
   }
 
   const buildFinalQuery = () => {
@@ -49,13 +59,12 @@ const ResultsTable = ({ querySearchValue }: { querySearchValue: string }) => {
   const finalQuery = buildFinalQuery()
 
   const { data } = useSearchRepositoriesQuery(
-    { query: finalQuery, first: rowsPerPage, after: currentCursor },
+    { query: finalQuery, first: rowsPerPage, before: before, after: after },
     { skip: !finalQuery },
   )
 
   useEffect(() => {
-    setPage(0)
-    setCursors([null])
+    dispatch(setPage(0))
   }, [finalQuery])
 
   return data ? (
@@ -64,32 +73,16 @@ const ResultsTable = ({ querySearchValue }: { querySearchValue: string }) => {
         <TableContainer>
           <Table aria-label="Результаты поиска">
             <TableHead>
-              <ResultsLabelsRow
-                handleSort={handleSort}
-                sortField={sortField}
-                sortDirection={sortDirection}
-              />
+              <ResultsLabelsRow handleSort={handleSort} />
             </TableHead>
             <TableBody>
-              <ResultsTableList
-                data={data}
-                setSelectedRepo={setSelectedRepo}
-                selectedRepo={selectedRepo}
-              />
+              <ResultsTableList data={data} />
             </TableBody>
           </Table>
         </TableContainer>
-        <Pagination
-          page={page}
-          setPage={setPage}
-          rowsPerPage={rowsPerPage}
-          setRowsPerPage={setRowsPerPage}
-          data={data}
-          setCursors={setCursors}
-          cursors={cursors}
-        />
+        <Pagination />
       </Stack>
-      {selectedRepo ? <RepoDetails selectedRepo={selectedRepo} /> : <NoData />}
+      {selectedRepo ? <RepoDetails /> : <NoData />}
     </Stack>
   ) : (
     <Welcome />
