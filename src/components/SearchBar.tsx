@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { setQuerySearchValue } from '@/store/repoSlice'
+import { setFinalQuery } from '@/store/sortSlice'
 import { Button, Stack, TextField } from '@mui/material'
 
 const SearchBar = () => {
@@ -39,7 +39,7 @@ const SearchBar = () => {
       <Button
         variant="contained"
         sx={{ width: '105px' }}
-        onClick={() => dispatch(setQuerySearchValue(searchValue))}
+        onClick={() => dispatch(setFinalQuery(searchValue))}
       >
         Искать
       </Button>

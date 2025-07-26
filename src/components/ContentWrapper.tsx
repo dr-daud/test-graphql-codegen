@@ -14,27 +14,13 @@ import Welcome from './Welcome'
 const ContentWrapper = () => {
   const dispatch = useDispatch()
 
-  const { querySearchValue } = useSelector(
-    (state: RootState) => state.repoReducer,
-  )
-
   const { after, before, rowsPerPage } = useSelector(
     (state: RootState) => state.paginationReducer,
   )
 
-  const { sortDirection, selectedRepo, sortField } = useSelector(
+  const { finalQuery, selectedRepo } = useSelector(
     (state: RootState) => state.sortReducer,
   )
-
-  const buildFinalQuery = () => {
-    let q = querySearchValue.trim()
-    if (sortField) {
-      q += ` sort:${sortField}-${sortDirection}`
-    }
-    return q
-  }
-
-  const finalQuery = buildFinalQuery()
 
   const { data } = useSearchRepositoriesQuery(
     { query: finalQuery, first: rowsPerPage, before: before, after: after },
@@ -47,7 +33,7 @@ const ContentWrapper = () => {
 
   return data ? (
     <Stack sx={{ flexDirection: 'row' }}>
-      <ResultsTable finalQuery={finalQuery} />
+      <ResultsTable />
       {selectedRepo ? <RepoDetails /> : <NoData />}
     </Stack>
   ) : (

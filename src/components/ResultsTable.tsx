@@ -7,7 +7,6 @@ import { setSortDirection, setSortField } from '@/store/sortSlice'
 import { RootState } from '@/store/store'
 import { TField, TSortDirection } from '@/types/types'
 import {
-  Pagination,
   Stack,
   Table,
   TableBody,
@@ -15,11 +14,12 @@ import {
   TableHead,
 } from '@mui/material'
 
+import Pagination from './Pagination'
 import ResultsLabelsRow from './ResultsLabelsRow'
 import ResultsTableList from './ResultsTableList'
 
-const ResultsTable = ({ finalQuery }: { finalQuery: string }) => {
-  const { sortDirection, sortField } = useSelector(
+const ResultsTable = () => {
+  const { finalQuery, sortDirection, sortField } = useSelector(
     (state: RootState) => state.sortReducer,
   )
 
