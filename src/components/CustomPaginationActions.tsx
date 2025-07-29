@@ -21,6 +21,8 @@ export function CustomPaginationActions(props: TablePaginationOwnProps) {
     { skip: !finalQuery },
   )
 
+  console.log(data?.search.pageInfo.hasPreviousPage)
+
   const handleBack = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (data?.search.pageInfo.hasPreviousPage) {
       dispatch(setAfter(null))

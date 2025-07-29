@@ -11,11 +11,11 @@ const SearchBar = () => {
 
   return (
     <Stack
+      direction={'row'}
+      spacing={1}
       sx={{
         backgroundColor: '#00838F',
         padding: '19px 0 19px 32px',
-        flexDirection: 'row',
-        gap: 1,
       }}
     >
       <TextField

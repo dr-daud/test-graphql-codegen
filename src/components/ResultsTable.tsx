@@ -47,7 +47,7 @@ const ResultsTable = () => {
   )
 
   return (
-    <Stack sx={{ flex: '1' }}>
+    <Stack sx={{ flex: '1', justifyContent: 'space-between' }}>
       <TableContainer>
         <Table aria-label="Результаты поиска">
           <TableHead>

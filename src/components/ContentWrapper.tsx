@@ -6,9 +6,8 @@ import { setPage } from '@/store/paginationSlice'
 import { RootState } from '@/store/store'
 import { Stack } from '@mui/material'
 
-import NoData from './NoData'
-import RepoDetails from './RepoDetails'
 import ResultsTable from './ResultsTable'
+import SelectedRepoView from './SelectedRepoView'
 import Welcome from './Welcome'
 
 const ContentWrapper = () => {
@@ -32,9 +31,14 @@ const ContentWrapper = () => {
   }, [finalQuery])
 
   return data ? (
-    <Stack sx={{ flexDirection: 'row' }}>
+    <Stack
+      direction={'row'}
+      sx={{
+        minHeight: 'calc(100vh - 32px - 80px)',
+      }}
+    >
       <ResultsTable />
-      {selectedRepo ? <RepoDetails /> : <NoData />}
+      <SelectedRepoView selectedRepo={selectedRepo} />
     </Stack>
   ) : (
     <Welcome />
